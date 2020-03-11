@@ -20,14 +20,19 @@ namespace CoffeeShopWithDatabase
 
         private void addButton_Click(object sender, EventArgs e)
         {
+            //connection
             string connection = @"Server=DESKTOP-28DHLU6; Database=CoffeeShop; integrated security=true";
             SqlConnection sqlconnection = new SqlConnection(connection);
 
-            string command = "insert into Items(Name,Price) values ('" + nameTextBox.Text + "','" + priceTextBox.Text + "')";
+            //command
+            //INSERT INTO Items(Name,Price) VALUES ('A',80);
+            string command = "INSERT INTO Items(Name,Price) VALUES ('" + nameTextBox.Text + "','" + priceTextBox.Text + "')";
             SqlCommand con = new SqlCommand(command, sqlconnection);
 
+            //Open
             sqlconnection.Open();
 
+            //Execute
             int i = con.ExecuteNonQuery();
             if (i > 0)
             {
@@ -37,7 +42,7 @@ namespace CoffeeShopWithDatabase
             {
                 MessageBox.Show("Not Added");
             }
-
+            //Close
             sqlconnection.Close();
 
             clear();
@@ -46,6 +51,29 @@ namespace CoffeeShopWithDatabase
         {
             nameTextBox.Clear();
             priceTextBox.Clear();
+        }
+
+        private void showButton_Click(object sender, EventArgs e)
+        {
+            //connection
+            string connection = @"Server=DESKTOP-28DHLU6; Database=CoffeeShop; integrated security=true";
+            SqlConnection sqlconnection = new SqlConnection(connection);
+
+            //command
+            //SELECT * FROM Items;
+            string command = "SELECT * FROM Items";
+            SqlCommand con = new SqlCommand(command, sqlconnection);
+
+            //Open
+            sqlconnection.Open();
+
+            //Execute
+            SqlDataAdapter sqldataadapter = new SqlDataAdapter(con);
+            DataTable datatable = new DataTable();
+            sqldataadapter.Fill(datatable);
+            showDataGridView.DataSource = datatable;
+            //Close
+            sqlconnection.Close();
         }
     }
 }

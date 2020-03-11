@@ -17,9 +17,11 @@ namespace Coffee_Shop
         int hot = 90;
         int regular = 80;
         int price;
+        bool v = false;
 
         string s;
         List<string> show = new List<string>();
+        List<string> contactNo = new List<string>();
 
         public CoffeeShop()
         {
@@ -29,28 +31,94 @@ namespace Coffee_Shop
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (customerNameTextBox.Text == "")
+            Validation();
+            if (v == false)
             {
-                MessageBox.Show("Customer Name can't be empty");
+                Price();
+                s = "Customer Information :" + '\n' + "Customer Name :" + customerNameTextBox.Text + '\n' + "Contact No :" + contactNoTextBox.Text + '\n' + "Address :" + addressTextBox.Text + '\n' + "Order :" + orderComboBox.Text + '\n' + "Quantity :" + quantityTextBox.Text + '\n' + "Price :" + Convert.ToString(price) + '\n' + '\n' + '\n';
+                show.Add(s);
+                contactNo.Add(contactNoTextBox.Text);
+                Clear();
+                Show();
             }
-            if (contactNoTextBox.Text == "")
+           
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            customerNameTextBox.Clear();
+            contactNoTextBox.Clear();
+            addressTextBox.Clear();
+            orderComboBox.Text = "Select";
+            quantityTextBox.Clear();
+            showRichTextBox.Clear();
+        }
+
+        private void showButton_Click(object sender, EventArgs e)
+        {
+            Show();
+        }
+
+        public void Validation()
+        {
+            v = false;
+
+            if (customerNameTextBox.Text == "" && contactNoTextBox.Text == "" && addressTextBox.Text == "" && orderComboBox.Text == "Select" && quantityTextBox.Text == "")
             {
-                MessageBox.Show("Contact No can't be empty");
+                MessageBox.Show("Customer Information can't be empty");
+                v = true;
             }
-            if (addressTextBox.Text == "")
+            else
             {
-                MessageBox.Show("Address can't be empty");
+                if (customerNameTextBox.Text == "")
+                {
+                    MessageBox.Show("Customer Name can't be empty");
+                    v = true;
+                }
+                else if (contactNoTextBox.Text == "")
+                {
+                    MessageBox.Show("Contact No can't be empty");
+                    v = true;
+                }
+                else if (addressTextBox.Text == "")
+                {
+                    MessageBox.Show("Address can't be empty");
+                    v = true;
+                }
+                else if (orderComboBox.Text == "Select")
+                {
+                    MessageBox.Show("You have to select a order");
+                    v = true;
+                }
+                else if (quantityTextBox.Text == "")
+                {
+                    MessageBox.Show("Quantity can't be empty");
+                    v = true;
+                }
+              
             }
-            if (orderComboBox.Text == "Select")
+
+            if (contactNo.Contains(contactNoTextBox.Text))
             {
-                MessageBox.Show("You have to select a order");
-            }
-            if (quantityTextBox.Text == "")
-            {
-                MessageBox.Show("Quantity can't be empty");
+                MessageBox.Show("Contact No must be Unique");
+                v = true;
+                contactNoTextBox.Clear();
             }
             
+        }
 
+        public void Show()
+        {
+            string m = " ";
+
+            foreach (var item in show)
+            {
+                m += item;
+            }
+            showRichTextBox.Text = m;
+        }
+        public void Price()
+        {
             if (orderComboBox.Text == "Black")
             {
                 price = black * Convert.ToInt32(quantityTextBox.Text);
@@ -67,41 +135,8 @@ namespace Coffee_Shop
             {
                 price = regular * Convert.ToInt32(quantityTextBox.Text);
             }
-
-            s = "Customer Information :" + '\n' + "Customer Name :" + customerNameTextBox.Text + '\n' + "Contact No :" + contactNoTextBox.Text + '\n' + "Address :" + addressTextBox.Text + '\n' + "Order :" + orderComboBox.Text + '\n' + "Quantity :" + quantityTextBox.Text + '\n' + "Price :" + Convert.ToString(price) + '\n' + '\n' + '\n';
-            show.Add(s);
-            Clear();
-
-            string m = " ";
-
-            foreach (var item in show)
-            {
-                m += item;
-            }
-            showRichTextBox.Text = m;
         }
-
-        private void clearButton_Click(object sender, EventArgs e)
-        {
-            customerNameTextBox.Clear();
-            contactNoTextBox.Clear();
-            addressTextBox.Clear();
-            orderComboBox.Text = "Select";
-            quantityTextBox.Clear();
-            showRichTextBox.Clear();
-        }
-
-        private void showButton_Click(object sender, EventArgs e)
-        {
-            string m = " ";
-
-            foreach (var item in show)
-            {
-                m += item;
-            }
-            showRichTextBox.Text = m;
-        }
-        public void Clear()
+            public void Clear()
         {
             customerNameTextBox.Clear();
             contactNoTextBox.Clear();
